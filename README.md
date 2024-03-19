@@ -181,14 +181,53 @@ For analysis of different read length, reads from Vitis vinifera data were group
     file_haplotype.tsv
 
 
-**methylation entrophy (DMEAS)**
+**Methylation entrophy (DMEAS)**
 
 For analysis of DNA methylation heterogeneity in CG context across the genome  among different plant species assessed in this study (*Vitis vinifera, Arabidopsis thaliana, and Actinia melanandra*) and human data
 
     #Example showed here for 
     #Extract methylation data per read using modkit extract
-
-plotting (ggplot)
+    
+    modkit extract \ 
+    arabidopsis_DB00183.aligned.bam \
+    arabidopsis.extract.tsv \
+    --read-calls arabidopsis.readcalls.tsv \
+    --log-filepath arabidopsis_extract.log \
+    --mapped-only \
+    --reference GCA_000001735.2.fasta \
+    --cpg
+    
+    #Convert methylation per read into bis format according to DMEAS requirement (https://sourceforge.net/projects/dmeas/files/). 
+    #The format is a file with 4 columns:  reads IDs, methylation state, chromosome ID, genome start position and methylation call.
+    #In methylation state: “+” means methylated, “-” means unmethylated, 
+    #in methylation call: “Z” means methylated in CpG dinucleotide,“z” means unmethylated in CpG dinucleotide
+    
+    awk '{print $1,$12,$4,$3,$12}' \ 
+    arabidopsis.readcalls.tsv | \
+    awk '{ if ($2 == "m") $2="+"; print $0 }' | \
+    awk '{ if ($5 == "m") $5="Z"; print $0 }' | \
+    awk '{ if ($5 == "-") $5="z"; print $0 }' > \
+    arabidopsis.readcalls.bis
+    
+    #DMEAS expect bis file per chromosome in a directory, as well as  gp file per chromosome which is position of the CG in the genome.
+    
+    #Split bis file based on chromosome (column 3 in the bis file)
+    awk -F\  '{print>"/path/dir_tocontain_bis_files/"$3}' arabidopsis.readcalls.bis    
+    
+    #use CG_motif.bed file (generated using modkit motif-bed) to create gp file of each chromosome
+    awk -F\  '{print $2>"/path/dir_tocontain_gp/"$1}' arabidopsis_CG.bed
+    
+    #Rename the bis and gp file to contain the .bis and .gp extension:
+    cd /path/dir_tocontain_bis_files/
+    for file in *; do; \
+    mv -- "$file" "${file%}.bis"; done
+    
+    cd /path/dir_tocontain_gp/
+    for file in *; do; \
+    mv -- "$file" "${file%}.gp"; done
+    
+    
+**plotting (ggplot)**
 
 
 
