@@ -226,6 +226,23 @@ For analysis of DNA methylation heterogeneity in CG context across the genome  a
     for file in *; do; \
     mv -- "$file" "${file%}.gp"; done
     
+    #run DMEAS
+    #DMEAS.pl was downloaded from https://sourceforge.net/projects/dmeas/files/
+    
+    perl DMEAS.pl -d gw -s ms \
+    /path/dir_tocontain_bis_files/ \
+    /path/dir_tocontain_gp/ \
+    -o /path_to_outdir/
+    
+    #Calculate the average entrophy across each chromosome
+    for i in {1..5}; do; \
+    cd /path_to_outdir/; \
+    for j in /path_to_outdir/*4CG.txt; do; \
+    awk '{ sum += $4 } END { if (NR > 0) print sum \
+    / (NR-2) }' $j >> entropy.arabidopsis.txt' \
+    done; done
+    
+    
     
 **plotting (ggplot)**
 
