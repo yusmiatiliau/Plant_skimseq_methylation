@@ -65,7 +65,7 @@ Use samtools
 Based on coverage as calculated by mosdepth, determine downsampling proportion needed to achieve 10x, 1x, 0.1x, 0.01x and 0.001x coverage, each replicated with 10x bootstraps.
 For example, for the Vitis vinifera sample, the coverage was calculated at 168x, so to achieve 10x coverage, downsample with proportion of 0.059x.
     
-    for i in {01..10}; do; \
+    for i in {01..10}; do \
     samtools view -@ 16 -b -s$RANDOM.059 file.mapped.sorted.bam > file.10x.${i}.bam;
     samtools sort file.10x.${i}.bam -o file.10x.${i}.sorted.bam;
     samtools index -@ 16 $DIR/bam/10x/1031.10x.${i}.sorted.bam; done
@@ -80,8 +80,8 @@ Call the methylation signal written in bam file, as a methylation level per site
     modkit motif-bed ref.fasta CG 0 > ref.CG.bed
     
     #Run modkit pileup for each replicate of each downsample
-    for i in {01..10}; do; \
-    for j in 10x 1x 0.1x 0.01x 0.001x; do; \
+    for i in {01..10}; do \
+    for j in 10x 1x 0.1x 0.01x 0.001x; do \
     modkit pileup file.${j}.${i}.sorted.bam \ 
     file.${j}.${i}.bed \
     --log-filepath file.${j}.${i}.log \
@@ -103,9 +103,9 @@ Alternatively, later versions of modkit pileup enable adding information of meth
 
 **Global methylation calculation (awk)**
      
-     for k in CG CHG CHH 6mA; do; \
-     for j in 0.001x 0.01x 0.1x 1x; do; \
-     for i in path/*.${j}.${k}.bed; do; \
+     for k in CG CHG CHH 6mA; do \
+     for j in 0.001x 0.01x 0.1x 1x; do \
+     for i in path/*.${j}.${k}.bed; do \
      awk '{can+=$13; mod+=$12} END{print 100*(mod/(can+mod))}' $i >> \
      globalmethylation.${j}.${k}.txt; \
      done; done; done
@@ -219,11 +219,11 @@ For analysis of DNA methylation heterogeneity in CG context across the genome  a
     
     #Rename the bis and gp file to contain the .bis and .gp extension:
     cd /path/dir_tocontain_bis_files/
-    for file in *; do; \
+    for file in *; do \
     mv -- "$file" "${file%}.bis"; done
     
     cd /path/dir_tocontain_gp/
-    for file in *; do; \
+    for file in *; do \
     mv -- "$file" "${file%}.gp"; done
     
     #run DMEAS
@@ -235,11 +235,11 @@ For analysis of DNA methylation heterogeneity in CG context across the genome  a
     -o /path_to_outdir/
     
     #Calculate the average entrophy across each chromosome
-    for i in {1..5}; do; \
+    for i in {1..5}; do \
     cd /path_to_outdir/; \
     for j in /path_to_outdir/*4CG.txt; do; \
     awk '{ sum += $4 } END { if (NR > 0) print sum \
-    / (NR-2) }' $j >> entropy.arabidopsis.txt' \
+    / (NR-2) }' $j >> entropy.arabidopsis.txt'; \
     done; done
     
     
