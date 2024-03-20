@@ -54,7 +54,7 @@ Use samtools
     samtools index file.mapped.sorted.bam
     
    
-**Calculate coverage (mosdepth**
+**Calculate coverage (mosdepth)**
     
     cd outdir
     mosdepth -t 8 --fast-mode file_name file.mapped.sorted.bam
@@ -101,7 +101,7 @@ Call the methylation signal written in bam file, as a methylation level per site
 Alternatively, later versions of modkit pileup enable adding information of methylation context into bedmethyl file using the flag --motif, for example adding --motif CG 0 --motif CHG 0 --motif CHH 0 --motif A 0, to modkit pileup command, to get all CG, CHG, CHH, and 6mA methylation information.
 
 
-**Global methylation calculation (awk)**
+**Calculate global methylation (awk)**
      
      for k in CG CHG CHH 6mA; do \
      for j in 0.001x 0.01x 0.1x 1x; do \
@@ -111,7 +111,7 @@ Alternatively, later versions of modkit pileup enable adding information of meth
      done; done; done
 
 
-**Grouping of different read length (chopper)**
+**Group reads of differentlength (chopper)**
 
 For analysis of different read length, reads from Vitis vinifera data were grouped into different read length, <10kb, 10-50 kb, and >50kb, using chopper
      
@@ -124,7 +124,7 @@ For analysis of different read length, reads from Vitis vinifera data were group
 
      
  
- **phasing (whatshap)**
+ **Phase reads (whatshap)**
 
     #run Clair3 to get phased variants information
     run_clair3.sh \
@@ -158,7 +158,7 @@ For analysis of different read length, reads from Vitis vinifera data were group
     file_haplotype.tsv
 
 
-**Methylation entrophy (DMEAS)**
+**Calculate methylation entrophy (DMEAS)**
 
 For analysis of DNA methylation heterogeneity in CG context across the genome  among different plant species assessed in this study (*Vitis vinifera, Arabidopsis thaliana, and Actinia melanandra*) and human data
 
