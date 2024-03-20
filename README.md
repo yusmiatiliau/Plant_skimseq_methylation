@@ -123,31 +123,8 @@ For analysis of different read length, reads from Vitis vinifera data were group
      samtools index file_10_50kb_sorted.bam
 
      
-
-
-**trimming reads (shred.sh from bbmap) followed by modkit repair**
-
-    #split reads into 5kb sizes
-    shred.sh in=original.fastq.gz \
-    out=5kb.fastq.gz length=5000 minlength=1 overlap=0 overwrite=true usejni=t
-    
-    #map and sort the new 5kb reads
-    minimap2 -ax map-ont -y --secondary=no -t 8 ref.fasta \
-     5kb.fastq.gz | samtools sort -@8 -o 5kb.sorted.bam 
-    samtools index 5kb.sorted.bam
-
-    #sort the new 5kb reads and the orignal coverage bam file by read names
-    samtools sort -n original.bam -O BAM > original_sortedname.bam -@8
-    samtools sort -n 5kb.sorted.bam -O BAM > 5kb_sortedname.bam -@8
-    
-    #run modkit repair to repair the MM,ML tags based on the original bam file
-    modkit repair --donor-bam donor_sortedname.bam \
-    --acceptor-bam 5kb_sortedname.bam \
-    --log-filepath /repair.log \
-    --output-bam 5kb_repaired.bam
-    
-  
-**phasing (whatshap)**
+ 
+ **phasing (whatshap)**
 
     #run Clair3 to get phased variants information
     run_clair3.sh \
@@ -243,8 +220,6 @@ For analysis of DNA methylation heterogeneity in CG context across the genome  a
     done; done
     
     
-    
-**plotting (ggplot)**
 
 
 
