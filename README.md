@@ -111,7 +111,7 @@ Alternatively, later versions of modkit pileup enable adding information of meth
      done; done; done
 
 
-**Group reads of differentlength (chopper)**
+**Group reads of different length (chopper)**
 
 For analysis of different read length, reads from Vitis vinifera data were grouped into different read length, <10kb, 10-50 kb, and >50kb, using chopper
      
@@ -220,6 +220,7 @@ For analysis of DNA methylation heterogeneity in CG context across the genome  a
     done; done
     
     
+**Annotate bedmethyl files with TE or gene information**
 
 
 
