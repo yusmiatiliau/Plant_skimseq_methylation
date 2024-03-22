@@ -2,7 +2,7 @@ This is a compilation of the scripts used in this publication:
 
 **Low pass Nanopore sequencing for measurement of global methylation levels in plants**
 
-Some of these scripts were adapte based on this paper: Faulk, C. (2023). Genome skimming with nanopore sequencing precisely determines global and transposon DNA methylation in vertebrates. Genome Research, 33(6), 948–956. and its supplementary document at: https://faulk-lab.github.io/skimming/.
+Some of these scripts were adapted from code provided in this paper: Faulk, C. (2023). Genome skimming with nanopore sequencing precisely determines global and transposon DNA methylation in vertebrates. Genome Research, 33(6), 948–956. and its supplementary document at: https://faulk-lab.github.io/skimming/.
 
 
 
@@ -15,7 +15,7 @@ If output from ONT sequencer are in fast5, run pod5 convert to convert fast5 int
 
 **Re-basecall (dorado)**
 
-Modbasecalling on ONT sequencer does not have modbase model for non-CG contexts, therefore, raw outputs from instrument were re-basecalled using dorado (v.0.3.2) to detect both all context 5mC and 6mA methylation.
+The MinKNOW interface on the ONT sequencer did not have modbase model for non-CG contexts available, therefore raw outputs from instrument were re-basecalled after sequencing using dorado (v.0.3.2) to detect both all context 5mC and 6mA methylation.
     
     dorado basecaller --device cuda:all --emit-moves \
     path/dna_r10.4.1_e8.2_400bps_sup@v4.2.0 \
@@ -43,7 +43,7 @@ Use samtools
     
     #Convert bam into fastq, carrying all tags including MM,ML tags for methylation signal,
     #And filter based on reads quality >=10
-    samtools bam2fq -T '*' file.bam | chopper -q 10 | gzip > \
+    samtools fastq -T '*' file.bam | chopper -q 10 | gzip > \
     file.fastq.gz
     
     #Map fastq to reference, sort and index
@@ -68,12 +68,12 @@ For example, for the Vitis vinifera sample, the coverage was calculated at 168x,
     for i in {01..10}; do \
     samtools view -@ 16 -b -s$RANDOM.059 file.mapped.sorted.bam > file.10x.${i}.bam;
     samtools sort file.10x.${i}.bam -o file.10x.${i}.sorted.bam;
-    samtools index -@ 16 $DIR/bam/10x/1031.10x.${i}.sorted.bam; done
+    samtools index -@ 16 $DIR/bam/10x/Vv.10x.${i}.sorted.bam; done
     
 
 **Call methylation and split into each context (modkit + bedtools)**
 
-Call the methylation signal written in bam file, as a methylation level per site in a bedmethyl file using modkit pileup. Modkit motif used to create a motif reference bed file containing the chromosomal position of each CG, CHG, CHH, and 6mA context. Bedtools intersect was then use to split the bedmethyl files into each context.
+Call the methylation signals in the bam files, as a methylation level per site in a bedmethyl file using modkit pileup. Modkit motif was used to create a motif reference bed file containing the chromosomal position of each CG, CHG, CHH, and 6mA context. Bedtools intersect was then use to split the bedmethyl files into each context.
 
     #Run modkit motif
     #example for CG context
@@ -160,7 +160,7 @@ For analysis of different read length, reads from Vitis vinifera data were group
 
 **Calculate methylation entrophy (DMEAS)**
 
-For analysis of DNA methylation heterogeneity in CG context across the genome  among different plant species assessed in this study (*Vitis vinifera, Arabidopsis thaliana, and Actinia melanandra*) and human data
+For analysis of DNA methylation heterogeneity in CG context across the genome  among different plant species assessed in this study (*Vitis vinifera, Arabidopsis thaliana*, and *Actinia melanandra*) and human data
 
     #Example showed here for 
     #Extract methylation data per read using modkit extract
