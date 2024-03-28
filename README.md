@@ -111,7 +111,7 @@ Alternatively, later versions of modkit pileup enable adding information of meth
      done; done; done
 
 
-**Group reads of different length (chopper)**
+**Group reads of different length (chopper or bbmap)**
 
 For analysis of different read length, reads from Vitis vinifera data were grouped into different read length, <10kb, 10-50 kb, and >50kb, using chopper
      
@@ -122,7 +122,17 @@ For analysis of different read length, reads from Vitis vinifera data were group
      samtools sort -@8 -o file_10_50kb_sorted.bam
      samtools index file_10_50kb_sorted.bam
 
-     
+As this Vitis database contains mainly long reads, generation of reads <= 5kb length was done by trimming the reads to 5kb  using reformat.sh from bbmap.
+```
+reformat.sh in=file.mapped.sorted.bam \ 
+out=file.5kb.mapped.sorted.bam \
+allowidenticalnames=t \
+forcetrimright=5000 \ 
+ref=ref.fasta \
+usejni=t 
+```
+
+
  
  **Phase reads (whatshap)**
 
