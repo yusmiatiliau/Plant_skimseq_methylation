@@ -71,7 +71,7 @@ For example, for the Vitis vinifera sample, the coverage was calculated at 168x,
     samtools index -@ 16 $DIR/bam/10x/Vv.10x.${i}.sorted.bam; done
     
 
-**Call methylation and split into each context (modkit + bedtools)**
+**Extract methylation information into bedmethyl files, split them into each context or annotate with gene/TE information (modkit + bedtools)**
 
 Call the methylation signals in the bam files, as a methylation level per site in a bedmethyl file using modkit pileup. Modkit motif was used to create a motif reference bed file containing the chromosomal position of each CG, CHG, CHH, and 6mA context. Bedtools intersect was then use to split the bedmethyl files into each context.
 
@@ -88,7 +88,7 @@ Call the methylation signals in the bam files, as a methylation level per site i
     --filter-threshold C:0.85 --mod-thresholds m:0.85 --only-tabs; \
     done; done
     
-    #Run bedtools intersect to get context-specific methylation data
+    #Run bedtools intersect to get context-specific methylation data and gene/TE annotation
     #Example for CG context
     #There can be "a" methylation recorded due to SNPs,
     #include only "m" methylation signal using awk
@@ -229,10 +229,6 @@ For analysis of DNA methylation heterogeneity in CG context across the genome  a
     / (NR-2) }' $j >> entropy.arabidopsis.txt'; \
     done; done
     
-    
-**Annotate bedmethyl files with TE or gene information**
-
-
 
 
 
