@@ -27,16 +27,32 @@ The MinKNOW interface on the ONT sequencer did not have modbase model for non-CG
 
 **QC (nanoplot)**
 
-Run nanoplot using the sequencing summary file to get some QC metrics, such as N50, estimated number of bases, etc.
+Run nanoplot using the sequencing summary or fastq or bam file to get some QC metrics, such as N50, estimated number of bases, etc.
     
     NanoPlot --outdir path/dir/ \
     --threads 8 \ --tsv_stats \
     --info_in_report --N50 \
-    --summary  sequencing_summary.txt \
+    --summary  sequencing_summary.txt \ #or --fastq file.fq or --bam file.bam
     --barcoded \
     --no_static
     
+**QC (Qualimap)**
+
+Run Qualimap to get information regarding mapping quality, mapping rates, etc
+
+qualimap multi-bamqc \
+-d sample_file.txt \ #txt file with two columns, each for sample_ID and path to sample bam file
+-outdir /result_dir \
+--java-mem-size=128G \
+--run-bamqc \
+--paint-chromosome-limits
     
+**QC (paftools.js from minimap2)**
+
+Run paftools for other QC metrics such as substitution rates
+
+paftools.js stat file.sam
+
 **Filter and map (chopper, samtools, minimap2)**
 
 Use samtools 
