@@ -53,7 +53,9 @@ qualimap multi-bamqc \
 
 Run paftools for other QC metrics such as substitution rates
 
+```
 paftools.js stat file.sam
+```
 
 **Filter and map (chopper, samtools, minimap2)**
 
