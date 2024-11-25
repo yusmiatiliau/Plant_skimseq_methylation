@@ -40,13 +40,15 @@ Run nanoplot using the sequencing summary or fastq or bam file to get some QC me
 
 Run Qualimap to get information regarding mapping quality, mapping rates, etc
 
-   qualimap multi-bamqc \
+```
+qualimap multi-bamqc \
    -d sample_file.txt \ #txt file with two columns, each for sample_ID and path to sample bam file
    -outdir /result_dir \
    --java-mem-size=128G \
    --run-bamqc \
    --paint-chromosome-limits
-    
+```
+
 **QC (paftools.js from minimap2)**
 
 Run paftools for other QC metrics such as substitution rates
